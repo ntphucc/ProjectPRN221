@@ -1,0 +1,32 @@
+﻿@page "/admin/roles"
+@model ProjectRoomChat.Areas.Admin.Pages.Role.IndexModel
+@{
+    ViewData["Title"] = "Role List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<partial name="_StatusMessage" model="@Model.StatusMessage"/>
+
+<div class="mb-2">
+    <a asp-page="./Create" class="btn btn-secondary">Add new Role</a>
+    <a asp-page="../User/Index" class="btn btn-secondary">Manage User</a>
+</div>
+
+<table class="table">
+    <tr>
+        <th>Role Name</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach(var role in Model.roles)
+    {
+        <tr>
+            <td>@role.Name</td>
+            <td>
+                <a class="btn btn-success btn-sm" asp-page="./Edit" asp-route-roleid="@role.Id">Update</a>
+                <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-roleid="@role.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

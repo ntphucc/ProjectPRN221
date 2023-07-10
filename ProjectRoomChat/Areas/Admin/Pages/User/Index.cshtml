@@ -1,0 +1,50 @@
+﻿@page "/admin/member"
+@model ProjectRoomChat.Areas.Admin.Pages.User.IndexModel
+@{
+    ViewData["Title"] = "Member List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<partial name="_StatusMessage" model="@Model.StatusMessage"/>
+<p>Total Member: @Model.totalUser</p>
+
+<table class="table">
+    <tr>
+        <th>User Name</th>
+        <th>Role</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach(var user in Model.Users)
+    {
+        <tr>
+            <td>@user.UserName</td>
+            <td>
+                @if (string.IsNullOrEmpty(user.RoleNames))
+                {
+                    <a class="text-dark" asp-page="./AddRole" asp-route-id="@user.Id">+ Roles</a>
+                }
+                <a asp-page="./AddRole" asp-route-id="@user.Id">@user.RoleNames</a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm" asp-page="./SetPassword" asp-route-id="@user.Id">Set Password</a>
+                
+                <a class="btn btn-success btn-sm" asp-page="./Update" asp-route-id="@user.Id">Update</a>
+                <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@user.Id">Update</a>
+            </td>
+        </tr>
+    }
+</table>
+
+
+@{
+    var pagingmodel = new XTL.Helpers.PagingModel()
+            {
+                currentpage = Model.CurrentPage,
+                countpages = Model.CountPages,
+                generateUrl = (int? p) => Url.Page("./Index", new { p = p })
+            };
+}
+
+<partial name="_PagingXTL" model="@pagingmodel" />
