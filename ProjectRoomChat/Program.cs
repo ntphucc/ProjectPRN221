@@ -1,9 +1,11 @@
- using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ProjectRoomChat.Data;
 using ProjectRoomChat.Helpers;
 using ProjectRoomChat.Hubs;
 using ProjectRoomChat.Models;
+using ProjectRoomChat.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,12 @@ builder.Services.AddTransient<IFileValidator, FileValidator>();
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
+
+
+builder.Services.AddOptions();
+var mailSetting = builder.Configuration.GetSection("MailSetting");
+builder.Services.Configure<MailSetting>(mailSetting);
+builder.Services.AddSingleton<IEmailSender, SendMailService>();
 
 builder.Services.AddSwaggerGen(x =>
 {
